@@ -17,6 +17,7 @@ public class MoveController {
         if (field.getFigure(point) != null) {
             throw new AlreadyOccupiedException();
         }
+        field.setFigure(point, figure);
 
     }
 

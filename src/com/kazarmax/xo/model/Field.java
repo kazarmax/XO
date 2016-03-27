@@ -1,8 +1,6 @@
 package com.kazarmax.xo.model;
 
-import com.kazarmax.xo.model.exceptions.AlreadyOccupiedException;
 import com.kazarmax.xo.model.exceptions.InvalidPointException;
-
 import java.awt.*;
 
 public class Field {
@@ -29,15 +27,10 @@ public class Field {
     }
 
 
-    public void setFigure(final Point point, final Figure figure) throws InvalidPointException,
-                                                                        AlreadyOccupiedException {
+    public void setFigure(final Point point, final Figure figure) throws InvalidPointException {
 
         if (!checkPoint(point)) {
             throw new InvalidPointException();
-        }
-
-        if (field[point.x][point.y] != null) {
-            throw new AlreadyOccupiedException();
         }
 
         field[point.x][point.y] = figure;

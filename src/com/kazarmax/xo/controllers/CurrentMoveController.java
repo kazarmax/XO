@@ -31,6 +31,10 @@ public class CurrentMoveController {
             }
         }
 
+        if ((countX + countO) == field.getSize() * field.getSize()) {
+            return null;
+        }
+
         return countX > countO ? Figure.O : Figure.X;
 
     }

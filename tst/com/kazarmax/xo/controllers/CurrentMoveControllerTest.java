@@ -20,6 +20,32 @@ public class CurrentMoveControllerTest {
     }
 
     @Test
+    public void testCurrentMoveWhenFieldIsFull() throws Exception {
+
+        Field field = new Field();
+
+        try {
+            field.setFigure(new Point(0,0), Figure.X);
+            field.setFigure(new Point(0,1), Figure.O);
+            field.setFigure(new Point(0,2), Figure.X);
+
+            field.setFigure(new Point(1,0), Figure.X);
+            field.setFigure(new Point(1,1), Figure.O);
+            field.setFigure(new Point(1,2), Figure.X);
+
+            field.setFigure(new Point(2,0), Figure.O);
+            field.setFigure(new Point(2,1), Figure.X);
+            field.setFigure(new Point(2,2), Figure.O);
+
+        } catch (InvalidPointException e) {
+            e.printStackTrace();
+        }
+
+        assertNull(new CurrentMoveController().currentMove(field));
+
+    }
+
+    @Test
     public void testCurrentMoveWhenXEqualsO() throws Exception {
 
         Field field = new Field();

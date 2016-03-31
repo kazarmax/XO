@@ -75,15 +75,13 @@ public class WinnerControllerTest {
     public void testGetWinnerWhenXFillsHorLine() throws Exception {
 
         final Field field = new Field();
-        field.setFigure(new Point(0,0), Figure.X);
-        field.setFigure(new Point(0,1), Figure.X);
-        field.setFigure(new Point(0,2), Figure.X);
-
-        final Figure expectedFigure = Figure.X;
-        final Figure actualFigure = new WinnerController().getWinner(field);
-
-        assertEquals(expectedFigure, actualFigure);
-
+        for (int i = 0; i < field.getSize(); i++) {
+            final Field field1 = new Field();
+            for (int j = 0; j < field.getSize(); j++) {
+                field1.setFigure(new Point(i, j), Figure.X);
+            }
+            assertEquals(Figure.X, new WinnerController().getWinner(field1));
+        }
     }
 
     @Test

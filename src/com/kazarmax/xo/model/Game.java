@@ -18,6 +18,15 @@ public class Game {
         return players;
     }
 
+    public Player getPlayerByFigure(final Figure figure) {
+
+        for (Player player : getPlayers()) {
+            if (player.getFigure() == figure)
+                return player;
+        }
+        return null;
+    }
+
     public Field getField() {
         return field;
     }

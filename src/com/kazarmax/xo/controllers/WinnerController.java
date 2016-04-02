@@ -8,11 +8,6 @@ import java.awt.*;
 
 public class WinnerController {
 
-    private static final int CHECK_ROW_MODE = 1;
-    private static final int CHECK_COLUMN_MODE = 2;
-    private static final int CHECK_MAIN_DIAG_MODE = 3;
-    private static final int CHECK_SUB_DIAG_MODE = 4;
-
     public Figure getWinner(final Field field) {
 
         if (checkDiags(field) != null) {
@@ -29,16 +24,13 @@ public class WinnerController {
 
         for (int i = 0; i < field.getSize(); i++) {
 
-            if (checkLine(field, i, CHECK_ROW_MODE) != null) {
-                return checkLine(field, i, CHECK_ROW_MODE);
-            } else if (checkLine(field, i, CHECK_COLUMN_MODE) != null) {
-                return checkLine(field, i, CHECK_COLUMN_MODE);
+            if (checkLine(field, i, WinnerCheckMode.ROW_MODE) != null) {
+                return checkLine(field, i, WinnerCheckMode.ROW_MODE);
+            } else if (checkLine(field, i, WinnerCheckMode.COLUMN_MODE) != null) {
+                return checkLine(field, i, WinnerCheckMode.COLUMN_MODE);
             }
-
         }
-
         return null;
-
     }
 
     private Figure checkDiags(final Field field) {
@@ -55,17 +47,17 @@ public class WinnerController {
 
     private Figure checkMainDiag(final Field field) {
 
-        return checkLine(field, 0, CHECK_MAIN_DIAG_MODE);
+        return checkLine(field, 0, WinnerCheckMode.MAIN_DIAG_MODE);
 
     }
 
     private Figure checkSubDiag(final Field field) {
 
-        return checkLine(field, 0, CHECK_SUB_DIAG_MODE);
+        return checkLine(field, 0, WinnerCheckMode.SUB_DIAG_MODE);
 
     }
 
-    private Figure checkLine(final Field field, int lineNumber, int mode) {
+    private Figure checkLine(final Field field, int lineNumber, WinnerCheckMode mode) {
 
         Point point = new Point();
         Point nextPoint = new Point();
@@ -73,36 +65,35 @@ public class WinnerController {
 
         for (int i = 0; i < field.getSize() - 1; i++) {
 
-            if (mode == CHECK_MAIN_DIAG_MODE) {
-                point.x = i;
-                point.y = i;
-                nextPoint.x = i + 1;
-                nextPoint.y = i + 1;
-            }
+            switch (mode) {
 
-            if (mode == CHECK_SUB_DIAG_MODE) {
-                point.x = i;
-                point.y = field.getSize() - i - 1;
-                nextPoint.x = i + 1;
-                nextPoint.y = field.getSize() - i - 2;
-            }
+                case MAIN_DIAG_MODE:
+                    point.x = i;
+                    point.y = i;
+                    nextPoint.x = i + 1;
+                    nextPoint.y = i + 1;
+                    break;
 
-            if (mode == CHECK_ROW_MODE) {
+                case SUB_DIAG_MODE:
+                    point.x = i;
+                    point.y = field.getSize() - i - 1;
+                    nextPoint.x = i + 1;
+                    nextPoint.y = field.getSize() - i - 2;
+                    break;
 
-                point.x = lineNumber;
-                point.y = i;
-                nextPoint.x = lineNumber;
-                nextPoint.y = i + 1;
+                case ROW_MODE:
+                    point.x = lineNumber;
+                    point.y = i;
+                    nextPoint.x = lineNumber;
+                    nextPoint.y = i + 1;
+                    break;
 
-            }
-
-            if (mode == CHECK_COLUMN_MODE) {
-
-                point.y = lineNumber;
-                point.x = i;
-                nextPoint.y = lineNumber;
-                nextPoint.x = i + 1;
-
+                case COLUMN_MODE:
+                    point.y = lineNumber;
+                    point.x = i;
+                    nextPoint.y = lineNumber;
+                    nextPoint.x = i + 1;
+                    break;
             }
 
             if (point.equals(nextPoint)) {return null;}

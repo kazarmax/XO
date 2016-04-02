@@ -95,7 +95,7 @@ public class ConsoleView {
     }
 
     private Point askPoint() {
-        return new Point(askCoordinate("X"), askCoordinate("Y"));
+        return new Point(askCoordinate("X") - 1 , askCoordinate("Y") - 1);
     }
 
     private int askCoordinate(final String coordinateName) {

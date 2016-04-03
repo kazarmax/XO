@@ -10,6 +10,7 @@ import com.kazarmax.xo.model.exceptions.AlreadyOccupiedException;
 import com.kazarmax.xo.model.exceptions.InvalidPointException;
 
 import java.awt.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleView {
@@ -44,32 +45,32 @@ public class ConsoleView {
 
         final Field field = game.getField();
         final Figure currentFigure = currentMoveController.currentMove(field);
+        final Figure winnerFigure = winnerController.getWinner(field);
+
+        if (winnerFigure != null) {
+            System.out.println("Winner result: ");
+            showGameField(game);
+            System.out.println();
+            System.out.println("*******************************************");
+            System.out.println("Congratulations! Winner is: " +
+                    game.getPlayerByFigure(winnerFigure).getName() + ", figure \""
+                    + winnerFigure + "\"");
+            System.out.println("*******************************************");
+            return false;
+        }
 
         if (currentFigure == null) {
-            if (winnerController.getWinner(field) == null) {
-                System.out.println("No winner ... :(((");
-                return false;
-            }
-        } else {
-            System.out.println(game.getPlayerByFigure(currentFigure).getName() + ", figure \""
-                    + currentFigure + "\". \nPlease enter point for move: ");
-            try {
-                moveController.applyFigure(field, askPoint(), currentFigure);
-            } catch (InvalidPointException | AlreadyOccupiedException e) {
-                System.out.println("Invalid coordinates");
-                return true;
-            }
-            if (winnerController.getWinner(field) != null) {
-                System.out.println("Move result: ");
-                showGameField(game);
-                System.out.println();
-                System.out.println("*******************************************");
-                System.out.println("Congratulations! Winner is: " +
-                game.getPlayerByFigure(winnerController.getWinner(field)).getName() + ", figure \""
-                        + winnerController.getWinner(field) + "\"");
-                System.out.println("*******************************************");
-                return false;
-            }
+            System.out.println("No winnerFigure ... :(((");
+            return false;
+        }
+
+        System.out.println(game.getPlayerByFigure(currentFigure).getName() + ", figure \""
+                + currentFigure + "\". \nPlease enter point for move: ");
+        try {
+            moveController.applyFigure(field, askPoint(), currentFigure);
+        } catch (InvalidPointException | AlreadyOccupiedException e) {
+            System.out.println("Invalid coordinates");
+            return true;
         }
         return true;
     }
@@ -101,7 +102,12 @@ public class ConsoleView {
     private int askCoordinate(final String coordinateName) {
         System.out.print("Input " + coordinateName + ": ");
         Scanner in = new Scanner(System.in);
-        return in.nextInt();
+        try {
+            return in.nextInt();
+        } catch (final InputMismatchException e) {
+            System.out.println("O_o ... invalid coordinate ... Try again");
+            return askCoordinate(coordinateName);
+        }
     }
 
 }
